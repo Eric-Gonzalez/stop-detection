@@ -1,2 +1,0 @@
-model_checkpoint_path: "classifier.tfl.ckpt-116"
-all_model_checkpoint_paths: "classifier.tfl.ckpt-116"

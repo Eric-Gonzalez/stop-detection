@@ -18,27 +18,35 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 X_train = []
 Y_train = []
 
-# Load All Images
-for index, filename in enumerate(glob.glob(os.path.join('stop-annotations', '*.png'))):
+
+def resize_image(filename):
     img = scipy.ndimage.imread(filename, mode="RGB")
     img = scipy.misc.imresize(img, (32, 32), interp="bicubic").astype(np.float32, casting='unsafe')
-    data = np.asarray(img, dtype="int32")
-    X_train.append(data)
+    return np.asarray(img, dtype="int32")
+
+
+# Load Stop Sign Images
+for index, filename in enumerate(glob.glob(os.path.join('stop-annotations', '*.png'))):
+    X_train.append(resize_image(filename))
     Y_train.append([1, 0])
+
+for index, filename in enumerate(glob.glob(os.path.join('not-stop-annotations', '*.png'))):
+    X_train.append(resize_image(filename))
+    Y_train.append([0, 1])
 
 # X Test is Test Training Data
 # Y Test is Test Training Labels
 
 # Data loading and pre-processing
 img_pre_processing = ImagePreprocessing()
-# img_pre_processing.add_featurewise_zero_center()
 # img_pre_processing.add_featurewise_stdnorm()
+# img_pre_processing.add_featurewise_zero_center()
 
-img_aug = ImageAugmentation()
-# img_aug.add_random_flip_leftright()
-# img_aug.add_random_rotation(max_angle=10.)
 
 # Data Augmentation
+img_aug = ImageAugmentation()
+img_aug.add_random_flip_leftright()
+img_aug.add_random_rotation(max_angle=10.)
 
 # Convolutional Network
 network = input_data(shape=[None, 32, 32, 3],
