@@ -19,7 +19,7 @@ X_train = []
 Y_train = []
 
 # Load All Images
-for index, filename in enumerate(glob.glob(os.path.join('stop_annotations', '*.png'))):
+for index, filename in enumerate(glob.glob(os.path.join('stop-annotations', '*.png'))):
     img = scipy.ndimage.imread(filename, mode="RGB")
     img = scipy.misc.imresize(img, (32, 32), interp="bicubic").astype(np.float32, casting='unsafe')
     data = np.asarray(img, dtype="int32")
